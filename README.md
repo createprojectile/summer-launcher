@@ -52,14 +52,14 @@
 ### Сборка
 
 ```powershell
-dotnet build .\Summer.csproj -c Release
+dotnet build .\src\Summer.csproj -c Release
 ```
 
-Ожидаемый результат: `0 Error(s)`, `0 Warning(s)`, файл `bin\Release\net8.0-windows\Summer.exe`.
+Ожидаемый результат: `0 Error(s)`, `0 Warning(s)`, файл `src\bin\Release\net8.0-windows\Summer.exe`.
 
 ### Запуск
 
-1. Скопируйте содержимое `bin\Release\net8.0-windows\` в папку с именем **`SUMMER`**, **`SummerRust`** или **`SUMMER RUST`**.
+1. Скопируйте содержимое `src\bin\Release\net8.0-windows\` в папку с именем **`SUMMER`**, **`SummerRust`** или **`SUMMER RUST`**.
 2. Если игра уже установлена, рядом должен лежать `RustClient.exe`.
 3. Запустите `Summer.exe`.
 
@@ -73,20 +73,24 @@ dotnet build .\Summer.csproj -c Release
 
 ```text
 SummerLauncher/
-├── Summer/                  # App.xaml, App.xaml.cs — точка входа
-├── Summer.Controls/         # Кастомные контролы: логотип, спиннер, Sparkline, KeyCaptureButton
-├── Summer.Helpers/          # Команды, конвертеры, DWM-эффекты, звук, WindowChrome
-├── Summer.Models/           # Модели: настройки, манифесты, InstallState, ServerInfo
-├── Summer.Services/         # Сеть, CDN, обновления, проверка файлов, запуск, локализация
-├── Summer.ViewModels/       # MainViewModel, SettingsViewModel, SplashViewModel
-├── Summer.Views/            # XAML-экраны: MainWindow, MainPage, GraphicsPage, ToolsPage, SettingsPage
-├── themes/                  # tokens.xaml, controls.xaml, icons.xaml — дизайн-система
-├── assets/                  # Иконки, обложки серверов, пресеты, звук
-├── Properties/AssemblyInfo.cs
+├── src/
+│   ├── Summer/                  # App.xaml, App.xaml.cs — точка входа
+│   ├── Summer.Controls/         # Кастомные контролы: логотип, спиннер, Sparkline, KeyCaptureButton
+│   ├── Summer.Helpers/          # Команды, конвертеры, DWM-эффекты, звук, WindowChrome
+│   ├── Summer.Models/           # Модели: настройки, манифесты, InstallState, ServerInfo
+│   ├── Summer.Services/         # Сеть, CDN, обновления, проверка файлов, запуск, локализация
+│   ├── Summer.ViewModels/       # MainViewModel, SettingsViewModel, SplashViewModel
+│   ├── Summer.Views/            # XAML-экраны: MainWindow, MainPage, GraphicsPage, ToolsPage, SettingsPage
+│   ├── themes/                  # tokens.xaml, controls.xaml, icons.xaml — дизайн-система
+│   ├── assets/                  # Иконки, обложки серверов, пресеты, звук
+│   ├── Properties/AssemblyInfo.cs
+│   ├── app.ico
+│   ├── app.manifest
+│   └── Summer.csproj
 ├── docs/screenshot-main.png
-├── app.ico
-├── app.manifest
-└── Summer.csproj
+├── .gitattributes
+├── .gitignore
+└── README.md
 ```
 
 ---
@@ -127,7 +131,7 @@ Build succeeded.
 
 ### Важные особенности исходников
 
-- `Summer.csproj` **не использует** glob-включение XAML: все страницы и ресурсы перечислены явно. При добавлении нового экрана его нужно добавить и в `.csproj`, иначе `pack://`-ссылка упадёт во время выполнения.
+- `src\Summer.csproj` **не использует** glob-включение XAML: все страницы и ресурсы перечислены явно. При добавлении нового экрана его нужно добавить и в `.csproj`, иначе `pack://`-ссылка упадёт во время выполнения.
 - Ресурсы ищутся по путям `pack://application:,,,/Assets/...`; на диске каталог называется `assets` — регистр не важен для WPF, но логические имена в `.csproj` заданы в нижнем регистре.
 - `Properties/AssemblyInfo.cs` содержит `InternalsVisibleTo("Summer.Tests")`. Тестового проекта в репозитории нет — это наследие оригинала.
 - Версия лаунчера в интерфейсе берётся из `UpdateService.ClientVersion`: сначала файл `.launcher_version`, затем `ProductVersion` exe, затем `AssemblyInformationalVersion` (`1.0.11`).
@@ -509,11 +513,11 @@ JSON в camelCase, отформатирован, допускает коммен
 **Воспроизводимость для следующего агента:**
 
 ```powershell
-dotnet build .\Summer.csproj -c Release
+dotnet build .\src\Summer.csproj -c Release
 # ожидается 0/0
 ```
 
-При доработке UI помните: новый XAML нужно явно добавить в `Summer.csproj`, иначе он не попадёт в сборку. При изменении сетевых контрактов обновите разделы [API](#api-и-сетевые-контракты) и модели в `Summer.Models`.
+При доработке UI помните: новый XAML нужно явно добавить в `src\Summer.csproj`, иначе он не попадёт в сборку. При изменении сетевых контрактов обновите разделы [API](#api-и-сетевые-контракты) и модели в `src\Summer.Models`.
 
 ---
 
