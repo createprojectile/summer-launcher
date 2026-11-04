@@ -77,7 +77,7 @@ dotnet build .\src\Summer.csproj -c Release
 
 Скачать артефакт можно на вкладке **Actions → Build → нужный запуск → Artifacts**.
 
-**Готовый билд:** [Summer-win-x64 — артефакт Actions](https://github.com/createprojectile/summer-launcher/actions/runs/41782642915/artifacts/13300150693)
+**Готовый билд:** [Summer-win-x64 — артефакт Actions](https://github.com/createprojectile/summer-launcher/actions/runs/41783305399/artifacts/13300535749)
 
 > Репозиторий пока приватный: для скачивания нужен вход в GitHub с доступом к нему. Ссылка ведёт на конкретный запуск, а артефакты хранятся 14 дней — после публикации репозитория или истечения срока её нужно обновить.
 
