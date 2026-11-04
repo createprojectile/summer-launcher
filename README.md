@@ -81,6 +81,21 @@ dotnet build .\src\Summer.csproj -c Release
 
 > Репозиторий пока приватный: для скачивания нужен вход в GitHub с доступом к нему. Ссылка ведёт на конкретный запуск, а артефакты хранятся 14 дней — после публикации репозитория или истечения срока её нужно обновить.
 
+### Релизы
+
+Публикация в **GitHub Releases** автоматизирована: `.github/workflows/release.yml`.
+
+Workflow запускается при push тега вида `v*`, собирает проект через `dotnet publish`, упаковывает файлы в `Summer-<тег>-win-x64.zip` и создаёт (или обновляет) Release с автоматическими release notes.
+
+```powershell
+git tag v1.0.11
+git push origin v1.0.11
+```
+
+Готовые релизы: [github.com/createprojectile/summer-launcher/releases](https://github.com/createprojectile/summer-launcher/releases)
+
+> Сборка в релизе framework-dependent: для запуска нужен [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) (x64). В приватном репозитории релизы и ассеты видны только пользователям с доступом.
+
 ---
 
 ## Структура репозитория
