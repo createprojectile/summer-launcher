@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="Summer.Controls.LoadingSpinner" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="Root" Width="16" Height="16" IsHitTestVisible="False" Background="#00FFFFFF" Foreground="{StaticResource BrushAccentLight}" xmlns:controls="clr-namespace:Summer.Controls;assembly=Summer">
+  <Viewbox Stretch="Uniform">
+    <Grid Width="24" Height="24">
+      <Ellipse Width="20" Height="20" Stroke="#20FFFFFF" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+      <Path Name="Arc" Data="M12,2 A10,10 0 1 1 2,12" StrokeThickness="2.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round" RenderTransformOrigin="0.5,0.5" Stroke="{Binding Foreground, ElementName=Root}">
+        <UIElement.RenderTransform>
+          <RotateTransform x:Name="ArcRotation" />
+        </UIElement.RenderTransform>
+      </Path>
+    </Grid>
+  </Viewbox>
+  <FrameworkElement.Triggers>
+    <EventTrigger RoutedEvent="Loaded">
+      <BeginStoryboard>
+        <Storyboard>
+          <DoubleAnimation Storyboard.TargetName="ArcRotation" Storyboard.TargetProperty="Angle" From="0" To="360" Duration="0:0:1" RepeatBehavior="Forever" />
+        </Storyboard>
+      </BeginStoryboard>
+    </EventTrigger>
+  </FrameworkElement.Triggers>
+</UserControl>

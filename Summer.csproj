@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Summer</AssemblyName>
+    <RootNamespace>Summer</RootNamespace>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>12.0</LangVersion>
+    <!-- The recovered sources keep their original nullable annotations. They are
+         honoured, but flow analysis warnings are suppressed because decompiled
+         control flow (out-vars, null checks) is not always statically provable. -->
+    <Nullable>annotations</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <!-- XAML is listed explicitly so that the pack URIs keep their original
+       (lower-case) logical names, e.g. "views/mainpage.xaml". -->
+  <PropertyGroup>
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Include="Summer\App.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="app.xaml" />
+    <Page Include="Summer.Controls\LoadingSpinner.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="controls/loadingspinner.xaml" />
+    <Page Include="Summer.Controls\SummerLogo.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="controls/summerlogo.xaml" />
+    <Page Include="Summer.Views\GraphicsPage.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="views/graphicspage.xaml" />
+    <Page Include="Summer.Views\MainPage.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="views/mainpage.xaml" />
+    <Page Include="Summer.Views\MainWindow.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="views/mainwindow.xaml" />
+    <Page Include="Summer.Views\SettingsPage.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="views/settingspage.xaml" />
+    <Page Include="Summer.Views\SplashView.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="views/splashview.xaml" />
+    <Page Include="Summer.Views\SplashWindow.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="views/splashwindow.xaml" />
+    <Page Include="Summer.Views\ToolsPage.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="views/toolspage.xaml" />
+    <Page Include="themes\controls.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="themes/controls.xaml" />
+    <Page Include="themes\icons.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="themes/icons.xaml" />
+    <Page Include="themes\tokens.xaml" Generator="MSBuild:Compile" SubType="Designer" LogicalName="themes/tokens.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\app.ico" LogicalName="assets/app.ico" />
+    <Resource Include="assets\app.png" LogicalName="assets/app.png" />
+    <Resource Include="assets\graphics\combat.jpg" LogicalName="assets/graphics/combat.jpg" />
+    <Resource Include="assets\graphics\optimal.jpg" LogicalName="assets/graphics/optimal.jpg" />
+    <Resource Include="assets\graphics\ultra.jpg" LogicalName="assets/graphics/ultra.jpg" />
+    <Resource Include="assets\presets\combat.cfg" LogicalName="assets/presets/combat.cfg" />
+    <Resource Include="assets\presets\optimal.cfg" LogicalName="assets/presets/optimal.cfg" />
+    <Resource Include="assets\presets\ultra.cfg" LogicalName="assets/presets/ultra.cfg" />
+    <Resource Include="assets\servers\combat.jpg" LogicalName="assets/servers/combat.jpg" />
+    <Resource Include="assets\servers\main.jpg" LogicalName="assets/servers/main.jpg" />
+    <Resource Include="assets\sounds\ui-tap.wav" LogicalName="assets/sounds/ui-tap.wav" />
+  </ItemGroup>
+
+</Project>

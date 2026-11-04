@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="Summer.Controls.SummerLogo" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="Root" Background="#00FFFFFF" Focusable="False" SnapsToDevicePixels="True" xmlns:controls="clr-namespace:Summer.Controls;assembly=Summer">
+  <StackPanel VerticalAlignment="Center">
+    <TextBlock FontFamily="{StaticResource FontDisplay}" FontWeight="SemiBold" TextOptions.TextFormattingMode="Display" FontSize="{Binding TextSize, ElementName=Root}">
+      <Run Text="s" Foreground="{StaticResource BrushTextPrimary}" />
+      <Run Text="." Foreground="{StaticResource BrushAccent}" />
+      <Run Text="launcher" Foreground="{StaticResource BrushTextPrimary}" />
+    </TextBlock>
+    <TextBlock Text="RUST LAUNCHER" Margin="0,1,0,0" FontFamily="{StaticResource FontBody}" FontSize="8.5" FontWeight="SemiBold" Foreground="#808080">
+      <FrameworkElement.Style>
+        <Style TargetType="{x:Type TextBlock}">
+          <Setter Property="Visibility" Value="Collapsed" />
+          <Style.Triggers>
+            <DataTrigger Value="True" Binding="{Binding ShowTagline, ElementName=Root}">
+              <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </FrameworkElement.Style>
+    </TextBlock>
+  </StackPanel>
+</UserControl>

@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="Summer.Views.SettingsPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:Summer.Controls" xmlns:helpers="clr-namespace:Summer.Helpers" xmlns:views="clr-namespace:Summer.Views" Background="#00FFFFFF" FontFamily="{StaticResource FontBody}" Foreground="{StaticResource BrushTextPrimary}" Loaded="OnLoaded">
+  <Grid Background="{StaticResource BrushBackgroundSoft}" ClipToBounds="True">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid Row="0" Margin="32,22,32,0">
+      <StackPanel>
+        <TextBlock Style="{StaticResource PageTitleTextStyle}" Text="{helpers:Loc Settings_Title}" />
+        <TextBlock Margin="0,5,0,0" FontSize="12.5" Foreground="#9C9C9C" Text="{helpers:Loc Settings_Subtitle}" />
+      </StackPanel>
+      <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+          <Ellipse Width="5" Height="5" VerticalAlignment="Center">
+            <FrameworkElement.Style>
+              <Style TargetType="{x:Type Ellipse}">
+                <Setter Property="Fill" Value="#8A8A8A" />
+                <Style.Triggers>
+                  <DataTrigger Value="True" Binding="{Binding IsSaveError}">
+                    <Setter Property="Fill" Value="{StaticResource BrushAccent}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </FrameworkElement.Style>
+          </Ellipse>
+          <TextBlock Margin="7,0,0,0" FontSize="11.5" Foreground="#A0A0A0" Text="{Binding SaveStateText}" />
+        </StackPanel>
+        <TextBlock Margin="0,5,0,0" HorizontalAlignment="Right" FontFamily="{StaticResource FontMono}" FontSize="9.5" Foreground="#848484" Text="{Binding VersionLabel}" />
+      </StackPanel>
+    </Grid>
+    <Border Grid.Row="0" Height="1" Margin="32,18,32,0" VerticalAlignment="Bottom" Background="{StaticResource BrushBorder}" />
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+      <StackPanel Margin="32,16,32,20">
+        <Border Name="GameCard" Style="{StaticResource SurfaceCardStyle}" Padding="20,16">
+          <UIElement.RenderTransform>
+            <TranslateTransform Y="0" />
+          </UIElement.RenderTransform>
+          <StackPanel>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="01" Margin="0,4,11,0" FontFamily="{StaticResource FontMono}" FontSize="11.5" Foreground="{StaticResource BrushAccent}" />
+              <StackPanel Grid.Column="1">
+                <TextBlock Style="{StaticResource SectionTitleTextStyle}" Text="{helpers:Loc Settings_Section_Game}" />
+                <TextBlock Margin="0,4,0,0" FontSize="11.5" Foreground="#9A9A9A" Text="{helpers:Loc Settings_Section_GameDesc}" />
+              </StackPanel>
+              <TextBlock Grid.Column="2" VerticalAlignment="Top" FontFamily="{StaticResource FontMono}" FontSize="9.5" Foreground="#8C8C8C" Text="{Binding VersionLabel}" />
+            </Grid>
+            <Border Style="{StaticResource DividerStyle}" Margin="0,16,0,18" />
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.22*" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="0.78*" />
+              </Grid.ColumnDefinitions>
+              <StackPanel Grid.Column="0">
+                <TextBlock Style="{StaticResource LabelTextStyle}" Text="{helpers:Loc Settings_GameDirectory}" />
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <TextBox Height="42" Style="{StaticResource InputTextBoxStyle}" FontSize="12.5" IsReadOnly="True" Text="{Binding InstallPath, Mode=OneWay}" ToolTip="{helpers:Loc Settings_AutomaticDirectory}" />
+                </Grid>
+                <TextBlock TextWrapping="Wrap" Margin="0,7,0,0" FontSize="10.5" Text="{Binding GameDirectoryStatusText}" Foreground="{Binding GameDirectoryStatusColor}" />
+                <TextBlock TextWrapping="Wrap" Margin="0,5,0,0" FontSize="10.5" Foreground="#8F8F8F" Text="{helpers:Loc Settings_AutomaticDirectory}" />
+                <TextBlock Margin="0,18,0,0" Style="{StaticResource LabelTextStyle}" Text="{helpers:Loc Settings_LaunchArguments}" />
+                <TextBox Height="42" Style="{StaticResource InputTextBoxStyle}" FontFamily="{StaticResource FontMono}" FontSize="11.5" Tag="-high -window-mode exclusive" Text="{Binding LaunchArguments, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Margin="0,7,0,0" FontSize="10.5" Foreground="#8F8F8F" Text="{helpers:Loc Settings_LaunchArgumentsDesc}" />
+                <Border Style="{StaticResource DividerStyle}" Margin="0,16,0,14" />
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <StackPanel Margin="0,0,16,0" VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource LabelTextStyle}" Margin="0,0,0,3" Text="{helpers:Loc Settings_LaunchBehavior}" />
+                    <TextBlock FontSize="13" FontWeight="SemiBold" Foreground="#E7E7E7" Text="{Binding MinimizeOnLaunchStatusText}" />
+                    <TextBlock Margin="0,3,0,0" FontSize="10.5" Foreground="#8F8F8F" TextWrapping="Wrap" Text="{Binding MinimizeOnLaunchDescription}" />
+                  </StackPanel>
+                  <ToggleButton Grid.Column="1" Style="{StaticResource SummerToggleSwitchStyle}" VerticalAlignment="Center" AutomationProperties.Name="{helpers:Loc Settings_MinimizeOnLaunch}" ToolTip="{helpers:Loc Settings_MinimizeTooltip}" IsChecked="{Binding MinimizeOnGameLaunch}" />
+                </Grid>
+              </StackPanel>
+              <Border Grid.Column="2" Background="#181818" BorderBrush="#282828" BorderThickness="1" CornerRadius="6" Padding="16">
+                <StackPanel>
+                  <Grid>
+                    <StackPanel>
+                      <TextBlock FontSize="10.5" FontWeight="SemiBold" Foreground="#9A9A9A" Text="{helpers:Loc Settings_FpsBooster}" />
+                      <TextBlock Margin="0,4,0,0" FontSize="13.5" FontWeight="SemiBold" Foreground="#E7E7E7" Text="{helpers:Loc Settings_Performance}" />
+                    </StackPanel>
+                    <ToggleButton Style="{StaticResource SummerToggleSwitchStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" AutomationProperties.Name="{helpers:Loc Settings_FpsBooster}" ToolTip="{helpers:Loc Settings_FpsBoosterTooltip}" IsChecked="{Binding IsFpsBoosterEnabled}" />
+                  </Grid>
+                  <TextBlock Margin="0,9,0,0" FontSize="11" LineHeight="15" Foreground="#929292" TextWrapping="Wrap" Text="{Binding FpsBoosterDescription}" />
+                  <Border Style="{StaticResource DividerStyle}" Margin="0,13" />
+                  <Grid Margin="0,0,0,6">
+                    <TextBlock FontSize="10.5" Foreground="#8F8F8F" Text="{helpers:Loc Settings_Status}" />
+                    <TextBlock HorizontalAlignment="Right" FontSize="11" FontWeight="SemiBold" Text="{Binding FpsBoosterStatusText}">
+                      <FrameworkElement.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                          <Setter Property="Foreground" Value="#8A8A8A" />
+                          <Style.Triggers>
+                            <DataTrigger Value="True" Binding="{Binding IsFpsBoosterEnabled}">
+                              <Setter Property="Foreground" Value="{StaticResource BrushAccentLight}" />
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </FrameworkElement.Style>
+                    </TextBlock>
+                  </Grid>
+                  <Grid Margin="0,0,0,6">
+                    <TextBlock FontSize="10.5" Foreground="#8F8F8F" Text="{helpers:Loc Settings_Version}" />
+                    <TextBlock HorizontalAlignment="Right" FontFamily="{StaticResource FontMono}" FontSize="10.5" Foreground="#C0C0C0" Text="{Binding CurrentVersion}" />
+                  </Grid>
+                  <Grid>
+                    <TextBlock FontSize="10.5" Foreground="#8F8F8F" Text="{helpers:Loc Settings_Channel}" />
+                    <TextBlock Text="RELEASE" HorizontalAlignment="Right" FontFamily="{StaticResource FontMono}" FontSize="10.5" Foreground="#C0C0C0" />
+                  </Grid>
+                </StackPanel>
+              </Border>
+            </Grid>
+          </StackPanel>
+        </Border>
+        <Border Name="InterfaceCard" Margin="0,14,0,0" Style="{StaticResource SurfaceCardStyle}" Padding="20,16">
+          <UIElement.RenderTransform>
+            <TranslateTransform Y="0" />
+          </UIElement.RenderTransform>
+          <StackPanel>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="02" Margin="0,4,11,0" FontFamily="{StaticResource FontMono}" FontSize="11.5" Foreground="{StaticResource BrushAccent}" />
+              <StackPanel Grid.Column="1">
+                <TextBlock Style="{StaticResource SectionTitleTextStyle}" Text="{helpers:Loc Settings_Section_Interface}" />
+                <TextBlock Margin="0,4,0,0" FontSize="11.5" Foreground="#9A9A9A" Text="{helpers:Loc Settings_Section_InterfaceDesc}" />
+              </StackPanel>
+            </Grid>
+            <Border Style="{StaticResource DividerStyle}" Margin="0,14,0,14" />
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.05*" />
+                <ColumnDefinition Width="28" />
+                <ColumnDefinition Width="0.95*" />
+              </Grid.ColumnDefinitions>
+              <Grid Column="0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="0,0,16,0" VerticalAlignment="Center">
+                  <TextBlock FontSize="13.5" FontWeight="SemiBold" Foreground="#E7E7E7" Text="{helpers:Loc Settings_UiSounds}" />
+                  <TextBlock Margin="0,4,0,0" FontSize="11" LineHeight="14" Foreground="#929292" TextWrapping="Wrap" Text="{helpers:Loc Settings_UiSoundsDesc}" />
+                </StackPanel>
+                <ToggleButton Grid.Column="1" Style="{StaticResource SummerToggleSwitchStyle}" VerticalAlignment="Center" AutomationProperties.Name="{helpers:Loc Settings_UiSounds}" ToolTip="{helpers:Loc Settings_UiSoundsTooltip}" IsChecked="{Binding IsUiSoundEnabled}" />
+              </Grid>
+              <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                <Grid>
+                  <TextBlock Margin="0,0,0,8" Text="{helpers:Loc Settings_UiVolume}">
+                    <FrameworkElement.Style>
+                      <Style BasedOn="{StaticResource LabelTextStyle}" TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                          <DataTrigger Value="False" Binding="{Binding IsUiSoundEnabled}">
+                            <Setter Property="Foreground" Value="#555555" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </FrameworkElement.Style>
+                  </TextBlock>
+                  <TextBlock HorizontalAlignment="Right" FontFamily="{StaticResource FontMono}" FontSize="11.5" Text="{Binding UiSoundVolume, StringFormat='{}{0:0}%'}">
+                    <FrameworkElement.Style>
+                      <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="#B8B8B8" />
+                        <Style.Triggers>
+                          <DataTrigger Value="False" Binding="{Binding IsUiSoundEnabled}">
+                            <Setter Property="Foreground" Value="#555555" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </FrameworkElement.Style>
+                  </TextBlock>
+                </Grid>
+                <Slider Minimum="0" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" Style="{StaticResource SummerSliderStyle}" AutomationProperties.Name="{helpers:Loc Settings_UiVolume}" IsEnabled="{Binding IsUiSoundEnabled}" Value="{Binding UiSoundVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewMouseLeftButtonUp="OnVolumeSliderPreviewMouseLeftButtonUp" />
+              </StackPanel>
+            </Grid>
+            <Border Style="{StaticResource DividerStyle}" Margin="0,14,0,14" />
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <StackPanel Margin="0,0,16,0" VerticalAlignment="Center">
+                <TextBlock Style="{StaticResource LabelTextStyle}" Margin="0,0,0,3" Text="{helpers:Loc Settings_Language}" />
+                <TextBlock FontSize="11" Foreground="#929292" Text="{helpers:Loc Settings_LanguageDesc}" />
+              </StackPanel>
+              <Border Grid.Column="1" Background="#141414" BorderBrush="#2B2B2B" BorderThickness="1" CornerRadius="6" Padding="3">
+                <StackPanel Orientation="Horizontal">
+                  <Button Height="30" Padding="14,0" CommandParameter="ru" Command="{Binding SetLanguageCommand}">
+                    <FrameworkElement.Style>
+                      <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#00FFFFFF" />
+                        <Setter Property="Foreground" Value="#888888" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="FontSize" Value="11.5" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                        <Setter Property="Template">
+                          <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                              <Border Background="{TemplateBinding Control.Background}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                              </Border>
+                            </ControlTemplate>
+                          </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                          <DataTrigger Value="True" Binding="{Binding IsRussian}">
+                            <Setter Property="Background" Value="#2A1618" />
+                            <Setter Property="Foreground" Value="{StaticResource BrushAccentLight}" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </FrameworkElement.Style>
+                    <TextBlock Text="{helpers:Loc Settings_Russian}" />
+                  </Button>
+                  <Button Height="30" Padding="14,0" CommandParameter="en" Command="{Binding SetLanguageCommand}">
+                    <FrameworkElement.Style>
+                      <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#00FFFFFF" />
+                        <Setter Property="Foreground" Value="#888888" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="FontSize" Value="11.5" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                        <Setter Property="Template">
+                          <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                              <Border Background="{TemplateBinding Control.Background}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                              </Border>
+                            </ControlTemplate>
+                          </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                          <DataTrigger Value="True" Binding="{Binding IsEnglish}">
+                            <Setter Property="Background" Value="#2A1618" />
+                            <Setter Property="Foreground" Value="{StaticResource BrushAccentLight}" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </FrameworkElement.Style>
+                    <TextBlock Text="{helpers:Loc Settings_English}" />
+                  </Button>
+                </StackPanel>
+              </Border>
+            </Grid>
+          </StackPanel>
+        </Border>
+        <Grid Margin="0,14,0,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="14" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Border Name="ControlsCard" Grid.Column="0" Style="{StaticResource SurfaceCardStyle}" Padding="20,16">
+            <UIElement.RenderTransform>
+              <TranslateTransform Y="0" />
+            </UIElement.RenderTransform>
+            <StackPanel>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="03" Margin="0,4,11,0" FontFamily="{StaticResource FontMono}" FontSize="11.5" Foreground="{StaticResource BrushAccent}" />
+                <StackPanel Grid.Column="1">
+                  <TextBlock Style="{StaticResource SectionTitleTextStyle}" Text="{helpers:Loc Settings_Section_Controls}" />
+                  <TextBlock Margin="0,4,0,0" FontSize="11.5" Foreground="#9A9A9A" Text="{helpers:Loc Settings_Section_ControlsDesc}" />
+                </StackPanel>
+                <Button Grid.Column="2" VerticalAlignment="Top" Style="{StaticResource TextLinkButtonStyle}" FontSize="11" Content="{helpers:Loc Settings_ResetBinds}" Command="{Binding ResetKeyBindsCommand}" />
+              </Grid>
+              <Border Style="{StaticResource DividerStyle}" Margin="0,14,0,14" />
+              <StackPanel>
+                <TextBlock Style="{StaticResource LabelTextStyle}" Text="{helpers:Loc Settings_FastBinds}" />
+                <TextBlock Margin="0,6,0,0" FontSize="10.5" Foreground="#8F8F8F" Text="{helpers:Loc Settings_FastBindsDesc}" />
+              </StackPanel>
+              <ItemsControl Margin="0,12,0,0" ItemsSource="{Binding MacroBinds}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <UniformGrid Columns="2" />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border Margin="0,0,5,5" Padding="10,0" Background="#181818" BorderBrush="#252525" BorderThickness="1" CornerRadius="4">
+                      <FrameworkElement.ToolTip>
+                        <ToolTip MaxWidth="380">
+                          <TextBlock TextWrapping="Wrap" FontFamily="{StaticResource FontMono}" FontSize="10.5" Foreground="#C8C8C8" Text="{Binding Command}" />
+                        </ToolTip>
+                      </FrameworkElement.ToolTip>
+                      <Grid Height="50">
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="*" />
+                          <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,12,0">
+                          <TextBlock FontSize="12" Foreground="#C4C4C4" TextTrimming="CharacterEllipsis" Text="{Binding ActionName}" />
+                          <TextBlock Margin="0,3,0,0" FontSize="10" Foreground="#8A8A8A" TextTrimming="CharacterEllipsis" Text="{Binding Description}" ToolTip="{Binding Description}" />
+                        </StackPanel>
+                        <controls:KeyCaptureButton Grid.Column="1" Style="{StaticResource KeyCaptureButtonStyle}" Width="88" Height="26" ToolTip="{helpers:Loc Settings_KeyCaptureTooltip}" KeyName="{Binding Key, Mode=TwoWay}" AutomationProperties.Name="{Binding ActionName}" />
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+          <Border Name="MaintenanceCard" Grid.Column="2" Style="{StaticResource SurfaceCardStyle}" Padding="20,16">
+            <UIElement.RenderTransform>
+              <TranslateTransform Y="0" />
+            </UIElement.RenderTransform>
+            <StackPanel>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="04" Margin="0,4,11,0" FontFamily="{StaticResource FontMono}" FontSize="11.5" Foreground="{StaticResource BrushAccent}" />
+                <StackPanel Grid.Column="1">
+                  <TextBlock Style="{StaticResource SectionTitleTextStyle}" Text="{helpers:Loc Settings_Section_Maintenance}" />
+                  <TextBlock Margin="0,4,0,0" FontSize="11.5" Foreground="#9A9A9A" Text="{helpers:Loc Settings_Section_MaintenanceDesc}" />
+                </StackPanel>
+              </Grid>
+              <Border Style="{StaticResource DividerStyle}" Margin="0,14,0,14" />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="0,0,10,0">
+                  <TextBlock FontSize="12.5" FontWeight="SemiBold" Foreground="#DCDCDC" Text="{helpers:Loc Settings_Updates}" />
+                  <TextBlock Margin="0,4,0,0" FontSize="11" Foreground="#AAAAAA" TextWrapping="Wrap" Text="{Binding UpdateStatusTitle}" />
+                  <TextBlock Margin="0,3,0,0" FontSize="10.5" LineHeight="13" Foreground="#8E8E8E" TextWrapping="Wrap" Text="{Binding UpdateStatusDescription}" />
+                </StackPanel>
+                <Button Grid.Column="1" Height="30" VerticalAlignment="Center" Style="{StaticResource SecondaryButtonStyle}" AutomationProperties.Name="{helpers:Loc Settings_CheckUpdates}" Command="{Binding CheckForUpdatesCommand}">
+                  <StackPanel Orientation="Horizontal">
+                    <controls:LoadingSpinner Width="10" Height="10" Margin="0,0,5,0" Visibility="{Binding IsCheckingUpdates, Converter={StaticResource BoolToVisibility}}" />
+                    <TextBlock FontSize="11" Text="{helpers:Loc Settings_CheckUpdates}" />
+                  </StackPanel>
+                </Button>
+              </Grid>
+              <Border Style="{StaticResource DividerStyle}" Margin="0,18,0,16" />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="0,0,16,0" VerticalAlignment="Center">
+                  <TextBlock FontSize="12.5" FontWeight="SemiBold" Foreground="#DCDCDC" Text="{helpers:Loc Settings_FullVerify}" />
+                  <TextBlock Margin="0,5,0,0" TextWrapping="Wrap" FontSize="11" Foreground="#9A9A9A" Text="{helpers:Loc Settings_FullVerifyDesc}" />
+                </StackPanel>
+                <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Height="30" VerticalAlignment="Center" Content="{helpers:Loc Settings_CheckUpdates}" AutomationProperties.Name="{helpers:Loc Settings_FullVerify}" ToolTip="{helpers:Loc Settings_FullVerify}" Command="{Binding DataContext.FullVerifyCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
+              </Grid>
+            </StackPanel>
+          </Border>
+        </Grid>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

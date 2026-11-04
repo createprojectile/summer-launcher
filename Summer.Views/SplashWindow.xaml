@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="Summer.Views.SplashWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:views="clr-namespace:Summer.Views" xmlns:helpers="clr-namespace:Summer.Helpers" Title="Summer" Icon="pack://application:,,,/Assets/app.ico" Width="560" Height="376" WindowStartupLocation="CenterScreen" Opacity="0">
+  <FrameworkElement.Triggers>
+    <EventTrigger RoutedEvent="Window.Loaded">
+      <BeginStoryboard>
+        <Storyboard>
+          <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" />
+        </Storyboard>
+      </BeginStoryboard>
+    </EventTrigger>
+  </FrameworkElement.Triggers>
+  <Grid Name="WindowRoot" Background="#00FFFFFF" helpers:WindowChrome.IsDragArea="True">
+    <Border Name="Surface" Style="{StaticResource WindowSurfaceStyle}">
+      <Grid>
+        <views:SplashView />
+        <Button Style="{StaticResource WindowControlButtonStyle}" Tag="{StaticResource IconClose}" Width="28" Height="28" Margin="0,9,9,0" HorizontalAlignment="Right" VerticalAlignment="Top" AutomationProperties.Name="{helpers:Loc Header_Close}" ToolTip="{helpers:Loc Header_Close}" Click="CloseButton_OnClick" />
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

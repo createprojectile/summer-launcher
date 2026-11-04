@@ -1,0 +1,351 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+namespace Summer.Services;
+
+public sealed class LocalizationService : INotifyPropertyChanged
+{
+	private string _currentLanguage = "ru";
+
+	private static readonly Dictionary<string, string> RuStrings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+	{
+		["Nav_Home"] = "Главная",
+		["Nav_Graphics"] = "Графика",
+		["Nav_Tools"] = "Инструменты",
+		["Nav_Settings"] = "Настройки",
+		["Header_PlayingNow"] = "Сейчас играют:",
+		["Header_Close"] = "Закрыть",
+		["Header_Minimize"] = "Свернуть",
+		["Status_Ready"] = "ГОТОВ К ЗАПУСКУ",
+		["Status_InstallNeeded"] = "ТРЕБУЕТСЯ УСТАНОВКА",
+		["Status_UpdateAvailable"] = "ДОСТУПНО ОБНОВЛЕНИЕ",
+		["Status_Installing"] = "УСТАНОВКА КЛИЕНТА",
+		["Status_Downloading"] = "СКАЧИВАНИЕ КЛИЕНТА",
+		["Status_DownloadPaused"] = "ПАУЗА СКАЧИВАНИЯ",
+		["Status_Launching"] = "ЗАПУСК КЛИЕНТА",
+		["Status_Running"] = "КЛИЕНТ ЗАПУЩЕН",
+		["Status_InstallError"] = "ОШИБКА УСТАНОВКИ",
+		["Status_LaunchError"] = "ОШИБКА ЗАПУСКА",
+		["Status_InstallComplete"] = "УСТАНОВКА ЗАВЕРШЕНА",
+		["Btn_Play"] = "ИГРАТЬ",
+		["Btn_Download"] = "СКАЧАТЬ",
+		["Btn_Update"] = "ОБНОВИТЬ",
+		["Btn_Installing"] = "УСТАНОВКА…",
+		["Btn_Launching"] = "ЗАПУСК…",
+		["Btn_InGame"] = "В ИГРЕ",
+		["Btn_Pause"] = "ПАУЗА",
+		["Btn_Resume"] = "ПРОДОЛЖИТЬ",
+		["Btn_Cancel"] = "ОТМЕНА",
+		["Btn_PauseTooltip"] = "Приостановить скачивание",
+		["Btn_ResumeTooltip"] = "Продолжить скачивание",
+		["Btn_CancelTooltip"] = "Отменить установку",
+		["Server_Mode"] = "РЕЖИМ",
+		["Server_Wipe"] = "ВАЙП",
+		["Server_UntilWipe"] = "ДО ВАЙПА",
+		["Server_Online"] = "ОНЛАЙН",
+		["Server_Players"] = "ИГРОКОВ",
+		["Server_Slots"] = "СЛОТОВ",
+		["Server_Active"] = "АКТИВЕН",
+		["Server_Select"] = "ВЫБРАТЬ",
+		["Server_SectionTitle"] = "СЕРВЕРЫ",
+		["Server_SelectPrompt"] = "ВЫБЕРИТЕ СЕРВЕР",
+		["Graphics_Title"] = "Графика",
+		["Graphics_Subtitle"] = "Пресеты визуальных настроек и производительности Rust.",
+		["Graphics_Combat_Title"] = "Комбат",
+		["Graphics_Combat_Subtitle"] = "Максимальный FPS и отклик",
+		["Graphics_Combat_Desc"] = "Минимальные настройки графики, отключение лишних эффектов и теней для максимальной частоты кадров и четкой видимости соперников в PvP.",
+		["Graphics_Optimal_Title"] = "Оптимальные",
+		["Graphics_Optimal_Subtitle"] = "Идеальный баланс графики и FPS",
+		["Graphics_Optimal_Desc"] = "Сбалансированный пресет для комфортной игры с приятной картинкой и стабильным высоким фреймрейтом на большинстве видеокарт.",
+		["Graphics_Ultra_Title"] = "Ультра",
+		["Graphics_Ultra_Subtitle"] = "Бескомпромиссная кинематографичная графика",
+		["Graphics_Ultra_Desc"] = "Максимальная детализация текстур, реалистичное освещение, отражения и эффекты для мощных игровых систем.",
+		["Graphics_Active"] = "АКТИВЕН",
+		["Graphics_Apply"] = "ВЫБРАТЬ",
+		["Graphics_Quality"] = "Качество графики",
+		["Graphics_DrawDistance"] = "Дальность прорисовки",
+		["Graphics_Shadows"] = "Тени и отражения",
+		["Graphics_AA"] = "Сглаживание",
+		["Graphics_Badge_Recommended"] = "РЕКОМЕНДУЕТСЯ",
+		["Graphics_Badge_MaxQuality"] = "МАКС. КАЧЕСТВО",
+		["Graphics_Val_Low0"] = "Низкое (0)",
+		["Graphics_Val_Off"] = "Выключены",
+		["Graphics_Val_OffFxaa"] = "Выкл / FXAA",
+		["Graphics_Val_Medium3"] = "Среднее (3)",
+		["Graphics_Val_Medium"] = "Средние",
+		["Graphics_Val_Ultra5"] = "Ультра (5)",
+		["Graphics_Val_UltraTssao"] = "Ультра (TSSAO)",
+		["Settings_Title"] = "Настройки",
+		["Settings_Subtitle"] = "Игра, интерфейс, управление и обслуживание клиента.",
+		["Settings_AutoSaveEnabled"] = "Автосохранение включено",
+		["Settings_Saved"] = "Сохранено",
+		["Settings_SaveError"] = "Ошибка сохранения",
+		["Settings_Section_Game"] = "Игра",
+		["Settings_Section_GameDesc"] = "Установка и параметры запуска клиента.",
+		["Settings_GameDirectory"] = "ДИРЕКТОРИЯ ИГРЫ (ПАПКА УСТАНОВКИ)",
+		["Settings_LaunchArguments"] = "ПАРАМЕТРЫ ЗАПУСКА",
+		["Settings_LaunchArgumentsDesc"] = "Необязательные флаги Rust.",
+		["Settings_LaunchBehavior"] = "ПОВЕДЕНИЕ ПРИ ЗАПУСКЕ",
+		["Settings_MinimizeOnLaunch"] = "Сворачивать при запуске",
+		["Settings_KeepOpenOnLaunch"] = "Оставлять открытым",
+		["Settings_MinimizeOnLaunchDesc"] = "Лаунчер свернётся при запуске игры Rust.",
+		["Settings_KeepOpenOnLaunchDesc"] = "Лаунчер останется открытым при запуске игры.",
+		["Settings_MinimizeTooltip"] = "Сворачивать лаунчер или оставить открытым при запуске игры",
+		["Settings_FpsBooster"] = "FPS BOOSTER",
+		["Settings_Performance"] = "Производительность",
+		["Settings_Status"] = "СОСТОЯНИЕ",
+		["Settings_Enabled"] = "Активен",
+		["Settings_Disabled"] = "Отключён",
+		["Settings_Version"] = "ВЕРСИЯ",
+		["Settings_AutomaticDirectory"] = "Папка лаунчера. Игра скачивается и запускается только отсюда.",
+		["Launcher_LocationTitle"] = "Переместите лаунчер в папку игры",
+		["Launcher_LocationMessage"] = "Поместите лаунчер в папку SUMMER, SummerRust или SUMMER RUST и запустите его снова. Если игра уже установлена — рядом с RustClient.exe. До перемещения загрузка и запуск недоступны.",
+		["Settings_FullVerify"] = "Полная проверка файлов",
+		["Settings_FullVerifyDesc"] = "Проверить все файлы игры и восстановить повреждённые. Может занять несколько минут.",
+		["Settings_Channel"] = "КАНАЛ",
+		["Settings_FpsBoosterDescActive"] = "Оптимизация параметров запуска и процессов для максимальной плавности и FPS.",
+		["Settings_FpsBoosterDescInactive"] = "Стандартные параметры запуска без принудительной оптимизации процессов.",
+		["Settings_FpsBoosterTooltip"] = "Включить или выключить FPS Booster",
+		["Settings_Section_Interface"] = "Интерфейс",
+		["Settings_Section_InterfaceDesc"] = "Звуки нажатий и комфорт работы с лаунчером.",
+		["Settings_UiSounds"] = "Звуки интерфейса",
+		["Settings_UiSoundsDesc"] = "Короткий отклик при нажатии на кнопки и вкладки.",
+		["Settings_UiSoundsTooltip"] = "Включить или выключить звуки нажатий",
+		["Settings_UiVolume"] = "ГРОМКОСТЬ НАЖАТИЙ",
+		["Settings_Language"] = "ЯЗЫК ИНТЕРФЕЙСА",
+		["Settings_LanguageDesc"] = "Выберите язык отображения лаунчера.",
+		["Settings_Russian"] = "Русский",
+		["Settings_English"] = "English",
+		["Settings_Section_Controls"] = "Управление",
+		["Settings_Section_ControlsDesc"] = "Нажмите на клавишу и назначьте новую. Esc — отмена.",
+		["Settings_ResetBinds"] = "Сбросить",
+		["Settings_FastBinds"] = "БЫСТРЫЕ БИНДЫ",
+		["Settings_FastBindsDesc"] = "Изменённые бинды сохраняются в существующий cfg\\keys.cfg в папке игры.",
+		["Settings_KeyCaptureTooltip"] = "Нажмите, чтобы назначить клавишу. Esc — отмена.",
+		["Settings_Section_Maintenance"] = "Обслуживание",
+		["Settings_Section_MaintenanceDesc"] = "Обновления и конфигурация клиента.",
+		["Settings_Updates"] = "Обновления",
+		["Settings_CheckUpdates"] = "Проверить",
+		["Settings_DirEmpty"] = "Папка не указана. Лаунчер запускает RustClient.exe только из заданной здесь директории.",
+		["Settings_DirNotFound"] = "Указанная папка не найдена на диске.",
+		["Settings_ClientFound"] = "✓ Клиент найден: ",
+		["Settings_ClientNotFound"] = "RustClient.exe рядом с лаунчером не найден. Клиент будет скачан в эту папку.",
+		["Settings_UpdateNotChecked"] = "Проверка еще не выполнялась",
+		["Settings_UpdateNotCheckedDesc"] = "Узнайте, актуальна ли установленная версия клиента.",
+		["Settings_UpdateChecking"] = "Проверяем обновления…",
+		["Settings_UpdateCheckingDesc"] = "Сверяем хеши файлов с манифестом Summer Network.",
+		["Settings_UpdateCheckFailed"] = "Не удалось проверить обновления",
+		["Settings_UpdateCheckFailedDesc"] = "Попробуйте еще раз через несколько секунд.",
+		["Settings_SavingChanges"] = "Сохраняем изменения…",
+		["Settings_AllSaved"] = "Все изменения сохранены",
+		["Settings_SaveFailed"] = "Не удалось сохранить настройки",
+		["Tools_Title"] = "Инструменты",
+		["Tools_Subtitle"] = "Полезные сервисы, вики и калькуляторы для Rust.",
+		["Tools_BackToHome"] = "На главную",
+		["Tools_Notice"] = "Плитки открывают внешние сайты в браузере по умолчанию.",
+		["Tools_Count"] = "7 СЕРВИСОВ",
+		["Main_HelpPrefix"] = "Бета-версия лаунчера: об ошибках и багах сообщайте в ",
+		["Main_HelpLink"] = "техническую поддержку",
+		["Main_HelpSuffix"] = " и получайте вознаграждение.",
+		["Splash_Updates"] = "ОБНОВЛЕНИЯ",
+		["Splash_Files"] = "ФАЙЛЫ",
+		["Splash_Launch"] = "ЗАПУСК",
+		["Splash_CheckUpdates"] = "Проверка обновлений"
+	};
+
+	private static readonly Dictionary<string, string> EnStrings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+	{
+		["Nav_Home"] = "Home",
+		["Nav_Graphics"] = "Graphics",
+		["Nav_Tools"] = "Tools",
+		["Nav_Settings"] = "Settings",
+		["Header_PlayingNow"] = "Playing now:",
+		["Header_Close"] = "Close",
+		["Header_Minimize"] = "Minimize",
+		["Status_Ready"] = "READY TO LAUNCH",
+		["Status_InstallNeeded"] = "INSTALLATION REQUIRED",
+		["Status_UpdateAvailable"] = "UPDATE AVAILABLE",
+		["Status_Installing"] = "INSTALLING CLIENT",
+		["Status_Downloading"] = "DOWNLOADING CLIENT",
+		["Status_DownloadPaused"] = "DOWNLOAD PAUSED",
+		["Status_Launching"] = "LAUNCHING CLIENT",
+		["Status_Running"] = "CLIENT RUNNING",
+		["Status_InstallError"] = "INSTALLATION ERROR",
+		["Status_LaunchError"] = "LAUNCH ERROR",
+		["Status_InstallComplete"] = "INSTALLATION COMPLETE",
+		["Btn_Play"] = "PLAY",
+		["Btn_Download"] = "DOWNLOAD",
+		["Btn_Update"] = "UPDATE",
+		["Btn_Installing"] = "INSTALLING…",
+		["Btn_Launching"] = "LAUNCHING…",
+		["Btn_InGame"] = "IN GAME",
+		["Btn_Pause"] = "PAUSE",
+		["Btn_Resume"] = "RESUME",
+		["Btn_Cancel"] = "CANCEL",
+		["Btn_PauseTooltip"] = "Pause download",
+		["Btn_ResumeTooltip"] = "Resume download",
+		["Btn_CancelTooltip"] = "Cancel installation",
+		["Server_Mode"] = "MODE",
+		["Server_Wipe"] = "WIPE",
+		["Server_UntilWipe"] = "UNTIL WIPE",
+		["Server_Online"] = "ONLINE",
+		["Server_Players"] = "PLAYERS",
+		["Server_Slots"] = "SLOTS",
+		["Server_Active"] = "ACTIVE",
+		["Server_Select"] = "SELECT",
+		["Server_SectionTitle"] = "SERVERS",
+		["Server_SelectPrompt"] = "SELECT SERVER",
+		["Graphics_Title"] = "Graphics",
+		["Graphics_Subtitle"] = "Visual settings and Rust performance presets.",
+		["Graphics_Combat_Title"] = "Combat",
+		["Graphics_Combat_Subtitle"] = "Maximum FPS & Responsiveness",
+		["Graphics_Combat_Desc"] = "Minimal graphics settings, shadows and extra effects disabled for highest framerate and crisp PvP target visibility.",
+		["Graphics_Optimal_Title"] = "Optimal",
+		["Graphics_Optimal_Subtitle"] = "Perfect Balance of Graphics & FPS",
+		["Graphics_Optimal_Desc"] = "Balanced preset for comfortable gameplay with pleasant visuals and stable high framerate on most GPUs.",
+		["Graphics_Ultra_Title"] = "Ultra",
+		["Graphics_Ultra_Subtitle"] = "Uncompromising Cinematic Visuals",
+		["Graphics_Ultra_Desc"] = "Maximum texture detail, realistic lighting, reflections and effects for high-end gaming rigs.",
+		["Graphics_Active"] = "ACTIVE",
+		["Graphics_Apply"] = "SELECT",
+		["Graphics_Quality"] = "Graphics Quality",
+		["Graphics_DrawDistance"] = "Draw Distance",
+		["Graphics_Shadows"] = "Shadows & Reflections",
+		["Graphics_AA"] = "Anti-Aliasing",
+		["Graphics_Badge_Recommended"] = "RECOMMENDED",
+		["Graphics_Badge_MaxQuality"] = "MAX QUALITY",
+		["Graphics_Val_Low0"] = "Low (0)",
+		["Graphics_Val_Off"] = "Off",
+		["Graphics_Val_OffFxaa"] = "Off / FXAA",
+		["Graphics_Val_Medium3"] = "Medium (3)",
+		["Graphics_Val_Medium"] = "Medium",
+		["Graphics_Val_Ultra5"] = "Ultra (5)",
+		["Graphics_Val_UltraTssao"] = "Ultra (TSSAO)",
+		["Settings_Title"] = "Settings",
+		["Settings_Subtitle"] = "Game, interface, controls and client maintenance.",
+		["Settings_AutoSaveEnabled"] = "Autosave enabled",
+		["Settings_Saved"] = "Saved",
+		["Settings_SaveError"] = "Save error",
+		["Settings_Section_Game"] = "Game",
+		["Settings_Section_GameDesc"] = "Installation and client launch options.",
+		["Settings_GameDirectory"] = "GAME DIRECTORY (INSTALL FOLDER)",
+		["Settings_LaunchArguments"] = "LAUNCH PARAMETERS",
+		["Settings_LaunchArgumentsDesc"] = "Optional Rust launch flags.",
+		["Settings_LaunchBehavior"] = "LAUNCH BEHAVIOR",
+		["Settings_MinimizeOnLaunch"] = "Minimize on launch",
+		["Settings_KeepOpenOnLaunch"] = "Keep launcher open",
+		["Settings_MinimizeOnLaunchDesc"] = "Launcher will minimize when Rust launches.",
+		["Settings_KeepOpenOnLaunchDesc"] = "Launcher will remain open when Rust launches.",
+		["Settings_MinimizeTooltip"] = "Minimize launcher or keep open when starting game",
+		["Settings_FpsBooster"] = "FPS BOOSTER",
+		["Settings_Performance"] = "Performance",
+		["Settings_Status"] = "STATUS",
+		["Settings_Enabled"] = "Active",
+		["Settings_Disabled"] = "Disabled",
+		["Settings_Version"] = "VERSION",
+		["Settings_AutomaticDirectory"] = "Launcher folder. The game is downloaded and launched only here.",
+		["Launcher_LocationTitle"] = "Move the launcher to the game folder",
+		["Launcher_LocationMessage"] = "Place the launcher in SUMMER, SummerRust or SUMMER RUST and restart it. If the game is installed, put it next to RustClient.exe. Downloads and game launch are blocked until then.",
+		["Settings_FullVerify"] = "Full file verification",
+		["Settings_FullVerifyDesc"] = "Check all game files and repair damaged ones. This may take several minutes.",
+		["Settings_Channel"] = "CHANNEL",
+		["Settings_FpsBoosterDescActive"] = "Optimized launch parameters and process priority for maximum FPS.",
+		["Settings_FpsBoosterDescInactive"] = "Standard launch parameters without forced process optimization.",
+		["Settings_FpsBoosterTooltip"] = "Toggle FPS Booster on or off",
+		["Settings_Section_Interface"] = "Interface",
+		["Settings_Section_InterfaceDesc"] = "Click sounds and launcher experience.",
+		["Settings_UiSounds"] = "Interface Sounds",
+		["Settings_UiSoundsDesc"] = "Short audible click response when pressing buttons and tabs.",
+		["Settings_UiSoundsTooltip"] = "Toggle interface sounds on or off",
+		["Settings_UiVolume"] = "CLICK VOLUME",
+		["Settings_Language"] = "INTERFACE LANGUAGE",
+		["Settings_LanguageDesc"] = "Select launcher display language.",
+		["Settings_Russian"] = "Русский",
+		["Settings_English"] = "English",
+		["Settings_Section_Controls"] = "Controls",
+		["Settings_Section_ControlsDesc"] = "Click on a key and press a new one. Esc to cancel.",
+		["Settings_ResetBinds"] = "Reset",
+		["Settings_FastBinds"] = "QUICK BINDS",
+		["Settings_FastBindsDesc"] = "Changed keybinds are saved to the existing cfg\\keys.cfg in the game folder.",
+		["Settings_KeyCaptureTooltip"] = "Click to assign a key. Esc to cancel.",
+		["Settings_Section_Maintenance"] = "Maintenance",
+		["Settings_Section_MaintenanceDesc"] = "Client updates and configuration.",
+		["Settings_Updates"] = "Updates",
+		["Settings_CheckUpdates"] = "Check",
+		["Settings_DirEmpty"] = "Folder not set. Launcher starts RustClient.exe only from specified directory.",
+		["Settings_DirNotFound"] = "Specified folder not found on disk.",
+		["Settings_ClientFound"] = "✓ Client found: ",
+		["Settings_ClientNotFound"] = "RustClient.exe was not found next to the launcher. The game will be downloaded here.",
+		["Settings_UpdateNotChecked"] = "Update check has not been performed yet",
+		["Settings_UpdateNotCheckedDesc"] = "Find out if the installed client version is up to date.",
+		["Settings_UpdateChecking"] = "Checking for updates…",
+		["Settings_UpdateCheckingDesc"] = "Verifying file hashes with Summer Network manifest.",
+		["Settings_UpdateCheckFailed"] = "Failed to check for updates",
+		["Settings_UpdateCheckFailedDesc"] = "Please try again in a few seconds.",
+		["Settings_SavingChanges"] = "Saving changes…",
+		["Settings_AllSaved"] = "All changes saved",
+		["Settings_SaveFailed"] = "Failed to save settings",
+		["Tools_Title"] = "Tools",
+		["Tools_Subtitle"] = "Useful services, wikis and calculators for Rust.",
+		["Tools_BackToHome"] = "Back to Home",
+		["Tools_Notice"] = "Tiles open external websites in your default browser.",
+		["Tools_Count"] = "7 SERVICES",
+		["Main_HelpPrefix"] = "Launcher beta: report errors and bugs to ",
+		["Main_HelpLink"] = "technical support",
+		["Main_HelpSuffix"] = " and get rewarded.",
+		["Splash_Updates"] = "UPDATES",
+		["Splash_Files"] = "FILES",
+		["Splash_Launch"] = "LAUNCH",
+		["Splash_CheckUpdates"] = "Checking for updates"
+	};
+
+	public static LocalizationService Instance { get; } = new LocalizationService();
+
+	public string CurrentLanguage
+	{
+		get
+		{
+			return _currentLanguage;
+		}
+		set
+		{
+			string text = (string.Equals(value, "en", StringComparison.OrdinalIgnoreCase) ? "en" : "ru");
+			if (_currentLanguage != text)
+			{
+				_currentLanguage = text;
+				OnPropertyChanged("CurrentLanguage");
+				OnPropertyChanged("IsRussian");
+				OnPropertyChanged("IsEnglish");
+				OnPropertyChanged("Item[]");
+			}
+		}
+	}
+
+	public bool IsRussian => _currentLanguage == "ru";
+
+	public bool IsEnglish => _currentLanguage == "en";
+
+	public string this[string key] => Get(key);
+
+	public event PropertyChangedEventHandler? PropertyChanged;
+
+	public string Get(string key)
+	{
+		if (IsEnglish && EnStrings.TryGetValue(key, out string value))
+		{
+			return value;
+		}
+		if (RuStrings.TryGetValue(key, out string value2))
+		{
+			return value2;
+		}
+		return key;
+	}
+
+	private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+	{
+		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+	}
+}
