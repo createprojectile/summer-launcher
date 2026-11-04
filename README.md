@@ -67,6 +67,16 @@ dotnet build .\src\Summer.csproj -c Release
 
 > Для чистой установки без игры: создайте пустую папку `SUMMER`, положите туда лаунчер и нажмите «СКАЧАТЬ». Клиент будет загружен в эту же папку.
 
+### CI
+
+Сборка автоматизирована в GitHub Actions: `.github/workflows/build.yml`.
+
+- запускается на `push` в `main`, на pull request и вручную (`workflow_dispatch`);
+- собирает `src/Summer.csproj` в конфигурации `Release` на `windows-latest` с .NET 8;
+- выкладывает готовый артефакт **Summer-win-x64** (`src/bin/Release/net8.0-windows/`) на 14 дней.
+
+Скачать артефакт можно на вкладке **Actions → Build → нужный запуск → Artifacts**.
+
 ---
 
 ## Структура репозитория
